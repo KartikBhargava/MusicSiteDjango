@@ -1,8 +1,14 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+from .models import Album
 
-
-# Create your views here.
 
 def index(request):
-    return HttpResponse("<h1>This is the Music app homepage")
+    all_albums = Album.objects.all()
+    return render(request, 'music/index.html', {'all_albums': all_albums})
+
+
+def detail(request, album_id):
+  # album = Album.objects.get(pk=album_id)
+  album = get_object_or_404(Album, pk=album_id)
+  return render(request, 'music/detail.html', {'album': album})
